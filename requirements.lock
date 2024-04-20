@@ -27,10 +27,8 @@ colorama==0.4.6
 filelock==3.13.4
     # via huggingface-hub
     # via mlagents-envs
-    # via torch
 fsspec==2024.3.1
     # via huggingface-hub
-    # via torch
 grpcio==1.48.2
     # via mlagents
     # via mlagents-envs
@@ -46,21 +44,14 @@ huggingface-hub==0.22.2
     # via mlagents
 idna==3.7
     # via requests
-jinja2==3.1.3
-    # via torch
 markdown==3.6
     # via tensorboard
 markupsafe==2.1.5
-    # via jinja2
     # via werkzeug
 mlagents==1.0.0
     # via boost-ml-agents
 mlagents-envs==1.0.0
     # via mlagents
-mpmath==1.3.0
-    # via sympy
-networkx==3.3
-    # via torch
 numpy==1.21.2
     # via gym
     # via h5py
@@ -69,6 +60,7 @@ numpy==1.21.2
     # via onnx
     # via pettingzoo
     # via tensorboard
+    # via torchvision
 onnx==1.12.0
     # via mlagents
 packaging==24.0
@@ -78,6 +70,7 @@ pettingzoo==1.15.0
 pillow==10.3.0
     # via mlagents
     # via mlagents-envs
+    # via torchvision
 protobuf==3.19.6
     # via mlagents
     # via mlagents-envs
@@ -93,24 +86,31 @@ pyyaml==6.0.1
     # via mlagents-envs
 requests==2.31.0
     # via huggingface-hub
+    # via torchvision
 six==1.16.0
     # via grpcio
     # via mlagents
     # via tensorboard
-sympy==1.12
-    # via torch
 tensorboard==2.16.2
     # via mlagents
 tensorboard-data-server==0.7.2
     # via tensorboard
-torch==2.2.2
+torch==1.13.1+cu116
+    # via boost-ml-agents
     # via mlagents
+    # via torchaudio
+    # via torchvision
+torchaudio==0.13.1+cu116
+    # via boost-ml-agents
+torchvision==0.14.1+cu116
+    # via boost-ml-agents
 tqdm==4.66.2
     # via huggingface-hub
 typing-extensions==4.11.0
     # via huggingface-hub
     # via onnx
     # via torch
+    # via torchvision
 urllib3==2.2.1
     # via requests
 werkzeug==3.0.2

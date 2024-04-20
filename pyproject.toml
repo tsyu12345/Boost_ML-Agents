@@ -7,6 +7,9 @@ authors = [
 ]
 dependencies = [
     "mlagents>=1.0.0",
+    "torch==1.13.1+cu116",
+    "torchaudio==0.13.1",
+    "torchvision==0.14.1+cu116",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -24,3 +27,8 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/boost_ml_agents"]
+
+[[tool.rye.sources]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu116"
+type = "index"
