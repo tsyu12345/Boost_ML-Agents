@@ -1,17 +1,12 @@
 param(
-    [bool]$cuda= $false
+    [bool]$cuda= $false,
+    [bool]$debug = $false
 )
 
-# Function to display a loading animation
-function Show-LoadingAnimation {
-    $chars = '|/-\'
-    $current = 0
-    while ($true) {
-        Write-Host "`r$($chars[$current])" -NoNewline
-        $current++
-        if ($current -ge $chars.Length) { $current = 0 }
-        Start-Sleep -Milliseconds 100
-    }
+if ($debug) {
+    $envPath = ".TESTvenv"
+} else {
+    $envPath = ".venv"
 }
 
 # Check if Visual C++ Build Tools are installed
@@ -50,16 +45,8 @@ if (-not (Check-VcBuildToolsInstalled)) {
     # Download the installer
     Invoke-WebRequest -Uri $installerUrl -OutFile $installerPath
 
-    # Start loading animation in a background job
-    $job = Start-Job -ScriptBlock ${function:Show-LoadingAnimation}
-
     # Install Visual C++ Build Tools
     Start-Process -FilePath $installerPath -ArgumentList '--add Microsoft.VisualStudio.Workload.VCTools --quiet' -Wait -NoNewWindow
-
-    # Stop the loading animation
-    Stop-Job -Job $job
-    Remove-Job -Job $job
-    Write-Host "`r" -NoNewline
 
     # Clean up the installer file
     Remove-Item -Path $installerPath
@@ -70,7 +57,6 @@ if (-not (Check-VcBuildToolsInstalled)) {
 
 
 # Create and activate virtual environment
-$envPath = ".venv"
 Write-Host "Creating virtual environment... ($envPath)"
 python -m venv $envPath
 
@@ -84,22 +70,15 @@ pip install -r requirements.txt
 # Conditionally install PyTorch with CUDA if requested
 if ($cuda -eq $true) {
     Write-Host "Installing PyTorch with CUDA support..."
-    pip install torch==1.13.1+cu116 torchaudio==0.13.1 torchvision==0.14.1+cu116 --index-url https://download.pytorch.org/whl/cu116
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
     #CUDAインストーラーの起動
-    $installerPath = "./cuda_11.6.0_windows_network.exe"
-    Write-Output "Installing CUDA 11.6..."
-    # Start loading animation in a background job
-    $job = Start-Job -ScriptBlock ${function:Show-LoadingAnimation}
-
+    $installerPath = "./cuda_11.8.0_windows_network.exe"
+    Write-Output "Installing CUDA 11.8..."
+    
     Start-Process -FilePath $installerPath -ArgumentList "-s" -Wait
 
-    # Stop the loading animation
-    Stop-Job -Job $job
-    Remove-Job -Job $job
-    Write-Host "`r" -NoNewline
-
-    Write-Output "CUDA 11.6 installation complete."
+    Write-Output "CUDA 11.8installation complete."
 }
 refreshenv
 

@@ -27,8 +27,10 @@ colorama==0.4.6
 filelock==3.13.4
     # via huggingface-hub
     # via mlagents-envs
+    # via torch
 fsspec==2024.3.1
     # via huggingface-hub
+    # via torch
 grpcio==1.48.2
     # via mlagents
     # via mlagents-envs
@@ -44,14 +46,25 @@ huggingface-hub==0.22.2
     # via mlagents
 idna==3.7
     # via requests
+intel-openmp==2021.4.0
+    # via mkl
+jinja2==3.1.3
+    # via torch
 markdown==3.6
     # via tensorboard
 markupsafe==2.1.5
+    # via jinja2
     # via werkzeug
+mkl==2021.4.0
+    # via torch
 mlagents==1.0.0
     # via boost-ml-agents
 mlagents-envs==1.0.0
     # via mlagents
+mpmath==1.3.0
+    # via sympy
+networkx==3.3
+    # via torch
 numpy==1.21.2
     # via gym
     # via h5py
@@ -86,23 +99,26 @@ pyyaml==6.0.1
     # via mlagents-envs
 requests==2.31.0
     # via huggingface-hub
-    # via torchvision
 six==1.16.0
     # via grpcio
     # via mlagents
     # via tensorboard
+sympy==1.12
+    # via torch
+tbb==2021.12.0
+    # via mkl
 tensorboard==2.16.2
     # via mlagents
 tensorboard-data-server==0.7.2
     # via tensorboard
-torch==1.13.1+cu116
+torch==2.3.0+cu118
     # via boost-ml-agents
     # via mlagents
     # via torchaudio
     # via torchvision
-torchaudio==0.13.1+cu116
+torchaudio==2.3.0+cu118
     # via boost-ml-agents
-torchvision==0.14.1+cu116
+torchvision==0.18.0+cu118
     # via boost-ml-agents
 tqdm==4.66.2
     # via huggingface-hub
@@ -110,7 +126,6 @@ typing-extensions==4.11.0
     # via huggingface-hub
     # via onnx
     # via torch
-    # via torchvision
 urllib3==2.2.1
     # via requests
 werkzeug==3.0.2
