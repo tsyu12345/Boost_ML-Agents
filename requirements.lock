@@ -98,6 +98,7 @@ pyyaml==6.0.1
     # via mlagents
     # via mlagents-envs
 requests==2.31.0
+    # via boost-ml-agents
     # via huggingface-hub
 six==1.16.0
     # via grpcio
