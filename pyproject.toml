@@ -3,17 +3,16 @@ name = "boost-ml-agents"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
-    { name = "tsyu12345", email = "syukut@gmail.com" }
+    { name = "tsyu1234", email = "syukunt@gmail.com" }
 ]
 dependencies = [
-    "mlagents>=1.0.0",
-    "torch>=2.2.2",
-    "torchaudio>=2.2.2",
-    "torchvision>=0.17.2",
-    "requests>=2.31.0",
+    "mlagents>=0.30.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
+
+[project.scripts]
+hello = "boost_ml_agents:hello"
 
 [build-system]
 requires = ["hatchling"]
@@ -22,9 +21,9 @@ build-backend = "hatchling.build"
 [tool.rye]
 managed = true
 dev-dependencies = [
+    "click>=8.1.7",
     "tqdm>=4.66.2",
     "requests>=2.31.0",
-    "click>=8.1.7",
 ]
 
 [tool.hatch.metadata]
@@ -32,8 +31,3 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/boost_ml_agents"]
-
-[[tool.rye.sources]]
-name = "pytorch"
-url = "https://download.pytorch.org/whl/cu118"
-type = "index"

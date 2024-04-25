@@ -48,7 +48,7 @@ class Pyenv:
             else:
                 print("[Pyenv Installer] Homebrew is not installed. Please install Homebrew and try again.")
                 return ""
-
+        print("[Pyenv Installer] Installing pyenv...")
         running_process = subprocess.run(["brew", "install", "pyenv"], check=True)
         return running_process.stdout.decode("utf-8")
     
@@ -76,7 +76,7 @@ class Pyenv:
         """
         try:
             subprocess.run(f"pyenv install {version}", shell=True, check=True)
-            subprocess.run(f"pyenv global {version}", shell=True, check=True)
+            subprocess.run(f"pyenv local {version}", shell=True, check=True)
             subprocess.run(f"pyenv rehash", shell=True, check=True)
         except subprocess.CalledProcessError:
             raise Exception(f"Failed to pin Python {version} to pyenv.")
