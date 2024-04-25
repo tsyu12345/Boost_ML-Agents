@@ -24,6 +24,7 @@ managed = true
 dev-dependencies = [
     "tqdm>=4.66.2",
     "requests>=2.31.0",
+    "click>=8.1.7",
 ]
 
 [tool.hatch.metadata]
