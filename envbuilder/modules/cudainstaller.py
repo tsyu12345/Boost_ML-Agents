@@ -5,6 +5,9 @@ import os
 from tqdm import tqdm
 
 class CUDAInstaller:
+    """
+    本クラスはWindowsのみのサポート
+    """
 
     #CUDA installerのURL
     InstallerURLs: const = {
