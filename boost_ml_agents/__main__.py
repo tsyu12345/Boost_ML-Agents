@@ -3,12 +3,24 @@ import click
 import sys
 import os
 import subprocess
+import shlex
 
 from .types.OSType import OSType
 from .modules.cudainstaller import CUDAInstaller
 from .modules.pyenvinstaller import Pyenv
+from .modules.utils import LoadingSpinner
 
 #TODO: 他のrleaseも対応する
+
+def run_command_in_venv(venv_path: str, command: str):
+    # 仮想環境内の Python インタプリタへのパスを指定
+    python_executable = f"{venv_path}/bin/python" if sys.platform != 'win32' else f"{venv_path}\\Scripts\\python.exe"
+    
+    # コマンド文字列をリストに変換（安全なコマンドライン解析のため）
+    command_list = [python_executable] + shlex.split(command)
+    print(command_list)
+    # コマンドを実行
+    result = subprocess.run(command_list, capture_output=True, text=True)
 
 @click.command()
 @click.option("--v", default="21", help="version of ml-agents to install")
@@ -36,11 +48,15 @@ def install(v: int, venv:str, cuda: bool):
         print("do you want to install pyenv? (y/n)")
         user_input = input()
         if user_input == "y":
+            loading = LoadingSpinner("Installing pyenv...")
+            loading.start(p_async=True)
             #os毎にdistributionが異なるので、それぞれの処理を行う
             if os_type == OSType.WINDOWS:
                 pyenv.install_win()
+                loading.stop()
             elif os_type == OSType.MAC:
                 pyenv.install_mac()
+                loading.stop()
         else:
             print("this command need pyenv. please install pyenv and try again.")
             return
@@ -48,19 +64,25 @@ def install(v: int, venv:str, cuda: bool):
         print("you have already installed pyenv.")
     
     pyenv.pin_python_ver("3.10.11")
-    subprocess.call(f'python -m venv {venv}', shell=True)
-    print("pinned python version to 3.10.11 and created virtual environment.")
-    # 2. venvのアクティベーション
-    if os_type == OSType.WINDOWS:
-        subprocess.call(f'{venv}\\Scripts\\activate', shell=True)
-    elif os_type == OSType.MAC:
-        subprocess.call(f'{venv}/bin/activate', shell=True)
-
-    # 3.依存ライブラリをインストール 
-    print("installing dependencies...")
+    if os.path.exists(venv):
+        print(f"virtual environment already exists: {venv}")
+        print("resuming vertial environment...")
+    else:
+        loading = LoadingSpinner("Creating virtual environment...")
+        loading.start(p_async=True)
+        subprocess.call(f'python -m venv {venv}', shell=True)
+        loading.stop()
+        print("pinned python version to 3.10.11 and created virtual environment.")
+    
+    
+    # 2.依存ライブラリをインストール 
+    loading = LoadingSpinner("Installing dependencies packages...")
+    loading.start(p_async=True)
     if cuda:
-        #pypyとCUDA
-        subprocess.call("pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu118", shell=True)
+        #pypy
+        run_command_in_venv(venv, "-m pip install -r ./requirements-cuda.txt")
+        run_command_in_venv(venv, "-m pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu118")
+        
         #カレントディレクトリにCUDA installer.exeの存在を確認
         installer = CUDAInstaller("11.8")
         cuda_installer = "./cuda_11.8.0_windows_network.exe"
@@ -72,16 +94,33 @@ def install(v: int, venv:str, cuda: bool):
             else:
                 print("this command need CUDA Toolkit. please install CUDA Toolkit and try again.")
                 return
-        print("installing CUDA Toolkit...")
+        else:
+            print("you have already downloaded CUDA Installer.")
+
+        loading_cuda = LoadingSpinner("Installing CUDA Toolkit...")
+        loading_cuda.start(p_async=True)
         installer.download_cuda(cuda_installer)
+        loading_cuda.stop()
         print("CUDA Toolkit installation completed.")
     else:
-        subprocess.call('pip install -r ./requirements.txt', shell=True)
-    
+        #pypyのみ
+        run_command_in_venv(venv, "-m pip install -r ./requirements.txt")
+        run_command_in_venv(venv, "-m pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0")
+
+    loading.stop()
+
+    print("\n ===========Next Step=============")
     print("ml-agents installation completed. let's start training your agents!")
     print("1. open Unity Project on './MLAgentsTemplate'")
-    print("2. run 'mlagents-learn --force' to start training.")
+    print("2. run 'mlagents-learn --force' to start mlagents backend system.")
+    print("3. run your Unity Project and start training your agents.")
     
 
 if __name__ == "__main__":
-    install()
+    
+    try:
+        install()
+    except Exception as e:
+        print("An error occurred during the installation process.")
+        print(e)
+        sys.exit(1)

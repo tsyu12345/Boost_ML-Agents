@@ -4,7 +4,7 @@ import subprocess
 import os
 from tqdm import tqdm
 
-from utils import LoadingSpinner
+from .utils import LoadingSpinner
 
 class CUDAInstaller:
     """
