@@ -12,7 +12,7 @@ readme = "README.md"
 requires-python = ">= 3.10"
 
 [project.scripts]
-hello = "boost_ml_agents:hello"
+hello = "boost_ml_agents"
 
 [build-system]
 requires = ["hatchling"]
@@ -30,4 +30,4 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/boost_ml_agents"]
+packages = ["boost_ml_agents"]
