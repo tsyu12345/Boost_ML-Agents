@@ -154,3 +154,5 @@ cython_debug/
 results
 .TESTvenv
 ml-agents
+.test
+.testcuda

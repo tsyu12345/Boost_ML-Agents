@@ -19,10 +19,12 @@ certifi==2024.2.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
+click==8.1.7
 cloudpickle==3.0.0
     # via gym
     # via mlagents-envs
 colorama==0.4.6
+    # via click
     # via tqdm
 filelock==3.13.4
     # via huggingface-hub
@@ -73,7 +75,6 @@ numpy==1.21.2
     # via onnx
     # via pettingzoo
     # via tensorboard
-    # via torchvision
 onnx==1.12.0
     # via mlagents
 packaging==24.0
@@ -83,7 +84,6 @@ pettingzoo==1.15.0
 pillow==10.3.0
     # via mlagents
     # via mlagents-envs
-    # via torchvision
 protobuf==3.19.6
     # via mlagents
     # via mlagents-envs
@@ -111,15 +111,8 @@ tensorboard==2.16.2
     # via mlagents
 tensorboard-data-server==0.7.2
     # via tensorboard
-torch==2.3.0+cu118
-    # via boost-ml-agents
+torch==2.3.0
     # via mlagents
-    # via torchaudio
-    # via torchvision
-torchaudio==2.3.0+cu118
-    # via boost-ml-agents
-torchvision==0.18.0+cu118
-    # via boost-ml-agents
 tqdm==4.66.2
     # via huggingface-hub
 typing-extensions==4.11.0
