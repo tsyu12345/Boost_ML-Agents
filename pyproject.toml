@@ -1,6 +1,6 @@
 [project]
 name = "boost-ml-agents"
-version = "0.1.0"
+version = "0.2.2"
 description = "Easy and fast ML-Agents environment building tool & template package"
 authors = [
     { name = "tsyu1234", email = "syukunt@gmail.com" }
