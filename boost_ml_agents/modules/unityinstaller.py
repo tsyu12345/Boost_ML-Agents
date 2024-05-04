@@ -1,6 +1,7 @@
 from typing import Final as const
 import subprocess
 import os
+import re
 
 from ..types.OSType import OSType
 class UnityInstaller:
@@ -68,9 +69,16 @@ class UnityInstaller:
             raise Exception("Unity Hub not found. please call 'find_unityhub' first")
         
         command = f'{self.UNITYHUB_PATH} -- --headless editors -r'
-        result = subprocess.run(command, shell=True, text=True)
-        print(result.stdout, result.stderr)
-        #return result.stdout.split("\n")
+        result = subprocess.run(command, shell=False, text=True ,capture_output=True)
+        if result.stderr:
+            print("Error:", result.stderr)
+            return []
+
+        # バージョン情報が含まれる行を見つけるための正規表現パターン
+        pattern = r'\b\d+\.\d+\.\d+[a-zA-Z0-9]+\b'
+        versions = re.findall(pattern, result.stdout)
+
+        return versions
         
 
 #test
