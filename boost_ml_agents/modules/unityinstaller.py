@@ -55,7 +55,7 @@ class UnityInstaller:
             raise Exception("Unity Hub not found. please call 'find_unityhub' first")
         
         command = f'{self.UNITYHUB_PATH} -- --headless install --version {version}'
-        result = subprocess.run(command, shell=True, text=True)
+        result = subprocess.run(command, shell=False, capture_output=True, text=True)
         return (version, result.stdout, result.stderr)
     
 
