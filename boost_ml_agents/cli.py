@@ -9,7 +9,7 @@ from .types.OSType import OSType
 from .modules.cudainstaller import CUDAInstaller
 from .modules.pyenvinstaller import Pyenv
 from .modules.utils import LoadingSpinner
-from .modules.unityinstaller import UnityInstaller
+from .modules.unitymanagement import UnityInstaller
 
 #TODO: 他のrleaseも対応する
 

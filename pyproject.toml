@@ -1,5 +1,5 @@
 [project]
-name = "boost-ml-agents"
+name = "Roket-Agents"
 version = "0.2.2"
 description = "Easy and fast ML-Agents environment building tool & template package"
 authors = [

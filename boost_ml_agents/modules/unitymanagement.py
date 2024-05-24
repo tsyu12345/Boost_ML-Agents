@@ -4,7 +4,8 @@ import os
 import re
 
 from ..types.OSType import OSType
-class UnityInstaller:
+
+class UnityInstallManager:
 
     UNITYHUB_PATH: str|None = None
 
@@ -13,8 +14,8 @@ class UnityInstaller:
         self.set_unityhub()
         
 
-    
-    def __find_hub(self, cmd: str|list[str]) -> str | None:
+    @classmethod
+    def find_hub(cls, cmd: str|list[str]) -> str | None:
         try:
             result = subprocess.check_output(cmd, text=True)
         except subprocess.CalledProcessError:
@@ -22,26 +23,29 @@ class UnityInstaller:
         else:
             return result.strip()
     
-    def set_unityhub(self) -> None:
+    @classmethod
+    def get_unityHub(cls) -> str:
         """
         set the path of Unity Hub
         Returns:
             str: path of Unity Hub
         """
         default_path: str
-        if self.OSType == OSType.WINDOWS:
+        if cls.OSType == OSType.WINDOWS:
             cmd = "where UnityHub.exe"
             default_path = "C:/Program Files/Unity Hub/Unity Hub.exe"
-        elif self.OSType == OSType.MAC:
+        elif cls.OSType == OSType.MAC:
             cmd = ['find', '/Applications', '-name', 'Unity Hub', '-print']
             default_path = "/Application/Unity/Hub/Editor"
         else:
             raise Exception("Unsupported OS")
         
         if os.path.exists(default_path):
-            self.UNITYHUB_PATH = default_path
+            cls.UNITYHUB_PATH = default_path
         else:
-            self.UNITYHUB_PATH = self.__find_hub(cmd)
+            cls.UNITYHUB_PATH = cls.find_hub(cmd)
+
+        return cls.UNITYHUB_PATH
 
     def install(self, version: str) -> tuple[str, str, str]:
         """
@@ -79,9 +83,16 @@ class UnityInstaller:
         versions = re.findall(pattern, result.stdout)
 
         return versions
-        
+
+class UnityProjectCreater:
+
+    def __init__(self):
+        self.hub = UnityInstallManager.get_unityHub()
+
+    def createPJ(self, name: str) -> None:
+        pass
 
 #test
 if __name__ == "__main__":
-    unity_installer = UnityInstaller(OSType.WINDOWS)
-    print(unity_installer.fetch_versions())
+    # unity_installer = UnityInstaller(OSType.WINDOWS)
+    # print(unity_installer.fetch_versions())
